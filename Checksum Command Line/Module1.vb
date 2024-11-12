@@ -133,7 +133,7 @@ Module Module1
             Console.WriteLine()
             Console.WriteLine("checksum.exe --hash=[mode] --file=[filename] --asterisk")
             Console.WriteLine()
-            Console.WriteLine("Your hash modes are as follows... crc/crc32 md5 sha1/sha160 sha256 sha384 sha512 ripemd160")
+            Console.WriteLine("Your hash modes are as follows... md5 sha1/sha160 sha256 sha384 sha512 ripemd160")
             Console.WriteLine()
             Console.WriteLine("The asterisk flag tells the program if it should include an asterisk before the file name. For example...")
             Console.WriteLine("[checksum] *[file name]")
