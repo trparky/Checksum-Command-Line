@@ -11,7 +11,6 @@ Module Module1
         sha384 = 4
         sha512 = 5
         ripemd160 = 6
-        crc32 = 7
     End Enum
 
     Private Function ComputeHash(filename As String, Optional mode As HashType = HashType.sha160) As String
