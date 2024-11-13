@@ -74,9 +74,21 @@ Module Module1
         Return parsedArguments
     End Function
 
-    Private Sub ColoredConsoleLineWriter(strStringToWriteToTheConsole As String, Optional color As ConsoleColor = ConsoleColor.Green)
+    ''' <summary>
+    ''' Writes a line of text to the console with color.
+    ''' </summary>
+    ''' <param name="strStringToWriteToTheConsole">The text that's written to the console.</param>
+    ''' <param name="boolNewLine">A Boolean value. This tells the function if it should include a new line after printing the text to the console.</param>
+    ''' <param name="color">The color in which the color of the text is written to the console.</param>
+    Private Sub ColoredConsoleLineWriter(strStringToWriteToTheConsole As String, boolNewLine As Boolean, Optional color As ConsoleColor = ConsoleColor.Green)
         Console.ForegroundColor = color
-        Console.Write(strStringToWriteToTheConsole)
+
+        If boolNewLine Then
+            Console.WriteLine(strStringToWriteToTheConsole)
+        Else
+            Console.Write(strStringToWriteToTheConsole)
+        End If
+
         Console.ResetColor()
     End Sub
 
@@ -103,7 +115,7 @@ Module Module1
             ElseIf strHashMode.Equals("ripemd160", StringComparison.CurrentCulture) Then
                 htHashType = HashType.ripemd160
             Else
-                ColoredConsoleLineWriter("ERROR:", ConsoleColor.Red)
+                ColoredConsoleLineWriter("ERROR:", False, ConsoleColor.Red)
                 Console.WriteLine(" Invalid hash mode.")
                 Exit Sub
             End If
@@ -119,11 +131,12 @@ Module Module1
                     Console.WriteLine($"{ComputeHash(strFileName, htHashType)} {fileInfo.Name}")
                 End If
             Else
-                ColoredConsoleLineWriter("ERROR:", ConsoleColor.Red)
+                ColoredConsoleLineWriter("ERROR:", False, ConsoleColor.Red)
                 Console.WriteLine($" The file ""{strFileName}"" doesn't exist.")
                 Exit Sub
             End If
         Else
+            ColoredConsoleLineWriter("--== Checksum Command Line ==--", True, ConsoleColor.Green)
             Console.WriteLine("You must provide some input for this program to work. For example...")
             Console.WriteLine()
             Console.WriteLine("checksum.exe --hash=[mode] --file=[filename] --asterisk")
