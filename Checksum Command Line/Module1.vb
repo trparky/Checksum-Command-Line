@@ -1,6 +1,4 @@
 ﻿Imports System.Collections.ObjectModel
-Imports System.Net.Security
-Imports System.Text.RegularExpressions
 
 Module Module1
     Enum HashType
