@@ -92,9 +92,7 @@ Module Module1
 
             If strHashMode.Equals("md5", StringComparison.CurrentCulture) Then
                 htHashType = HashType.md5
-            ElseIf strHashMode.Equals("sha1", StringComparison.CurrentCulture) Then
-                htHashType = HashType.sha160
-            ElseIf strHashMode.Equals("sha160", StringComparison.CurrentCulture) Then
+            ElseIf strHashMode.Equals("sha1", StringComparison.CurrentCulture) Or strHashMode.Equals("sha160", StringComparison.CurrentCulture) Then
                 htHashType = HashType.sha160
             ElseIf strHashMode.Equals("sha256", StringComparison.CurrentCulture) Then
                 htHashType = HashType.sha256
