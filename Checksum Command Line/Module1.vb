@@ -116,9 +116,9 @@ Module Module1
                 Dim fileInfo As New IO.FileInfo(strFileName)
 
                 If boolAsterisk Then
-                    Console.WriteLine(ComputeHash(strFileName, htHashType) & " *" & fileInfo.Name)
+                    Console.WriteLine($"{ComputeHash(strFileName, htHashType)} *{fileInfo.Name}")
                 Else
-                    Console.WriteLine(ComputeHash(strFileName, htHashType) & " " & fileInfo.Name)
+                    Console.WriteLine($"{ComputeHash(strFileName, htHashType)} {fileInfo.Name}")
                 End If
             Else
                 ColoredConsoleLineWriter("ERROR:", ConsoleColor.Red)
