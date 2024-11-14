@@ -95,6 +95,7 @@ Module Module1
     Sub Main()
         Dim parsedArguments As Dictionary(Of String, Object) = ParseArguments(My.Application.CommandLineArgs)
         Dim boolAsterisk As Boolean = parsedArguments.ContainsKey("asterisk")
+        Dim boolFullPath As Boolean = parsedArguments.ContainsKey("fullpath")
         Dim strCurrentPath As String = New IO.FileInfo(Process.GetCurrentProcess.MainModule.FileName).DirectoryName
 
         If parsedArguments.ContainsKey("hash") And parsedArguments.ContainsKey("file") Then
@@ -124,11 +125,26 @@ Module Module1
 
             If IO.File.Exists(strFileName) Then
                 Dim fileInfo As New IO.FileInfo(strFileName)
+                Dim strHashString As String
 
                 If boolAsterisk Then
-                    Console.WriteLine($"{ComputeHash(strFileName, htHashType)} *{fileInfo.Name}")
+                    strHashString = $"{ComputeHash(strFileName, htHashType)} *{If(boolFullPath, fileInfo.FullName, fileInfo.Name)}"
                 Else
-                    Console.WriteLine($"{ComputeHash(strFileName, htHashType)} {fileInfo.Name}")
+                    strHashString = $"{ComputeHash(strFileName, htHashType)} {If(boolFullPath, fileInfo.FullName, fileInfo.Name)}"
+                End If
+
+                If parsedArguments.ContainsKey("output") AndAlso Not String.IsNullOrWhiteSpace(parsedArguments.ContainsKey("output").ToString) Then
+                    Dim strOutputFile As String = parsedArguments("output")
+
+                    If Not IO.Path.IsPathRooted(strOutputFile) Then strOutputFile = IO.Path.Combine(Environment.CurrentDirectory, strOutputFile)
+
+                    IO.File.WriteAllText(strOutputFile, strHashString)
+
+                    ColoredConsoleLineWriter("--== Checksum Command Line ==--", True, ConsoleColor.Green)
+                    ColoredConsoleLineWriter("INFO:", False, ConsoleColor.Green)
+                    Console.WriteLine($" The hash data has been written to file ""{strOutputFile}"".")
+                Else
+                    Console.WriteLine(strHashString)
                 End If
             Else
                 ColoredConsoleLineWriter("ERROR:", False, ConsoleColor.Red)
@@ -139,13 +155,16 @@ Module Module1
             ColoredConsoleLineWriter("--== Checksum Command Line ==--", True, ConsoleColor.Green)
             Console.WriteLine("You must provide some input for this program to work. For example...")
             Console.WriteLine()
-            Console.WriteLine("checksum.exe --hash=[mode] --file=[filename] --asterisk")
+            Console.WriteLine("checksum.exe --hash=[mode] --file=[filename] --asterisk --output=[outputFilePath] --fullpath")
             Console.WriteLine()
             Console.WriteLine("Your hash modes are as follows... md5 sha1/sha160 sha256 sha384 sha512 ripemd160")
             Console.WriteLine()
             Console.WriteLine("The asterisk flag tells the program if it should include an asterisk before the file name. For example...")
             Console.WriteLine("[checksum] *[file name]")
             Console.WriteLine("If you don't want an asterisk, don't include the flag.")
+            Console.WriteLine()
+            Console.WriteLine("The --output variable allows you to write the hash data to a specified file.")
+            Console.WriteLine("The --fullpath tells the program if it should include a full path to the hashed file or just the name of the file without the full path.")
         End If
 
         If Debugger.IsAttached Then Threading.Thread.Sleep(4000)
