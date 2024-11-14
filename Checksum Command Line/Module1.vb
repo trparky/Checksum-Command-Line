@@ -96,7 +96,6 @@ Module Module1
         Dim parsedArguments As Dictionary(Of String, Object) = ParseArguments(My.Application.CommandLineArgs)
         Dim boolAsterisk As Boolean = parsedArguments.ContainsKey("asterisk")
         Dim boolFullPath As Boolean = parsedArguments.ContainsKey("fullpath")
-        Dim strCurrentPath As String = New IO.FileInfo(Process.GetCurrentProcess.MainModule.FileName).DirectoryName
 
         If parsedArguments.ContainsKey("hash") And parsedArguments.ContainsKey("file") Then
             Dim strHashMode As String = parsedArguments("hash").ToString.Trim
@@ -121,7 +120,7 @@ Module Module1
                 Exit Sub
             End If
 
-            If Not IO.Path.IsPathRooted(strFileName) Then strFileName = IO.Path.Combine(strCurrentPath, strFileName)
+            If Not IO.Path.IsPathRooted(strFileName) Then strFileName = IO.Path.Combine(Environment.CurrentDirectory, strFileName)
 
             If IO.File.Exists(strFileName) Then
                 Dim fileInfo As New IO.FileInfo(strFileName)
