@@ -398,3 +398,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Begin my stuff
+*.bat
+*.lnk
+*.ps1
+*.txt
